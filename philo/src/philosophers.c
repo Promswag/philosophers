@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:46:14 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/11 14:52:26 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/11 17:02:00 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,60 +14,54 @@
 
 void	*philosopher(void *args)
 {
-	t_philo	*philo;
+	t_philo			*philo;
+	struct timeval	time;
 
 	philo = args;
-	printf("Coucou\n");
+	gettimeofday(&time, NULL);
+	pthread_mutex_lock(philo->rules->lock);
+	printf("Coucou -> %loms\n", time.tv_sec * 1000 + time.tv_usec / 1000 - philo->rules->time);
+	pthread_mutex_unlock(philo->rules->lock);
 	return (NULL);
 }
 
-void	philo_init(t_philo **philo)
+void	philo_init(t_philo **philo, t_rules *rules)
 {
-	int	i;
+	int				i;
+	struct timeval	time;
 
-	(*philo)->threads = calloc(sizeof(pthread_t), (*philo)->rules.number);
+	*philo = malloc(sizeof(t_philo *) * rules->number);
+	gettimeofday(&time, NULL);
+	rules->time = time.tv_sec * 1000 + time.tv_usec / 1000;
+	rules->lock = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(rules->lock, NULL);
 	i = -1;
-	while (++i < (*philo)->rules.number)
+	pthread_mutex_lock(rules->lock);
+	while (++i < rules->number)
 	{
-		if (pthread_create(&(*philo)->threads[i], NULL, &philosopher, philo))
+		philo[i]->id = i;
+		philo[i]->rules = rules;
+		philo[i]->thread = malloc(sizeof(pthread_t));
+		if (pthread_create(philo[i]->thread, NULL, &philosopher, philo[i]))
 			break ;
 	}
+	pthread_mutex_unlock(rules->lock);
 	i = -1;
-	while (++i < (*philo)->rules.number)
+	while (++i < rules->number)
 	{
-		if ((*philo)->threads[i])
-			pthread_join((*philo)->threads[i], NULL);
+		if (philo[i]->thread)
+			pthread_join(*philo[i]->thread, NULL);
 	}
 }
 
 int	main(int argc, char **argv)
 {
-	// int				i;
-	// t_ph			*threads;
-
-	// threads = calloc(3, sizeof(t_ph *));
-	// (void)argc;
-	// (void)argv;
-	// i = -1;
-	// while (++i < 3)
-	// {
-	// 	threads[i].num = i;
-	// 	pthread_create(&threads[i].id, NULL, &hello, &threads[i]);
-	// }
-	// i = -1;
-	// while (++i < 3)
-	// {
-	// 	pthread_join(threads[i].id, NULL);
-	// }
-	// return (0);
-
 	t_philo	*philo;
+	t_rules	rules;
 
-	philo = malloc(sizeof(t_philo));
-	if (!philo)
+	if (args_handler(argc, argv, &rules))
 		return (-1);
-	if (args_handler(argc, argv, &philo))
-		return (-1);
-	philo_init(&philo);
+	philo_init(&philo, &rules);
+	pthread_mutex_destroy(rules.lock);
 	return (0);
 }
