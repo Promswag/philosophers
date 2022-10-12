@@ -6,7 +6,7 @@
 #    By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/30 14:35:47 by gbaumgar          #+#    #+#              #
-#    Updated: 2022/10/11 14:26:50 by gbaumgar         ###   ########.fr        #
+#    Updated: 2022/10/12 15:23:36 by gbaumgar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ INCLUDE_DIR		= ./include/
 SRC_DIR			= ./src/
 OUT_DIR			= ./
 
-SRC				= 	philosophers.c args.c utils.c
+SRC				= 	philosophers.c args.c utils.c thread.c misc.c
 OBJS			= ${SRC:%.c=${OUT_DIR}%.o}
 
 INCLUDE			= -I${INCLUDE_DIR}	
