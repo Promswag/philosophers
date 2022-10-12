@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 13:12:04 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/12 16:52:14 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/12 17:56:10 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,58 +14,48 @@
 
 void	philo_fork(t_philo *philo)
 {
-	if (philo->id % 2 && philo->next_philo->id != 1)
-	{
-		pthread_mutex_lock(philo->left_fork);
-		pthread_mutex_lock(philo->right_fork);
-		pthread_mutex_lock(philo->rules->lock);
-		printf("%lo %d has taken a fork\n", \
+	// if (philo->id % 2 && philo->next_philo->id != 1)
+	// {
+		pthread_mutex_lock(&philo->left_fork);
+		printf("%lu %d has taken a fork\n", \
 			atm() - philo->rules->time, philo->id);
-		printf("%lo %d has taken a fork\n", \
+		pthread_mutex_lock(&philo->next_philo->left_fork);
+		printf("%lu %d has taken a fork\n", \
 			atm() - philo->rules->time, philo->id);
-		pthread_mutex_unlock(philo->rules->lock);
-	}
-	else
-	{
-		pthread_mutex_lock(philo->right_fork);
-		pthread_mutex_lock(philo->left_fork);
-		pthread_mutex_lock(philo->rules->lock);
-		printf("%lo %d has taken a fork\n", \
-			atm() - philo->rules->time, philo->id);
-		printf("%lo %d has taken a fork\n", \
-			atm() - philo->rules->time, philo->id);
-		pthread_mutex_unlock(philo->rules->lock);
-	}
+	// }
+	// else
+	// {
+	// 	pthread_mutex_lock(&philo->next_philo->left_fork);
+	// 	printf("%lu %d has taken a fork\n", \
+	// 		atm() - philo->rules->time, philo->id);
+	// 	pthread_mutex_lock(&philo->left_fork);
+	// 	printf("%lu %d has taken a fork\n", \
+	// 		atm() - philo->rules->time, philo->id);
+	// }
 }
 
 void	philo_eat(t_philo *philo)
 {
-	pthread_mutex_lock(philo->rules->lock);
-	printf("%lo %d is eating\n", \
+	printf("%lu %d is eating\n", \
 		atm() - philo->rules->time, philo->id);
-	pthread_mutex_unlock(philo->rules->lock);
-	usleep(philo->rules->eat * 1000);
+	slip(philo->rules->eat);
 	philo->last_meal = atm();
 	philo->meals_eaten++;
-	pthread_mutex_unlock(philo->right_fork);
-	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(&philo->next_philo->left_fork);
+	pthread_mutex_unlock(&philo->left_fork);
 }
 
 void	philo_sleep(t_philo *philo)
 {
-	pthread_mutex_lock(philo->rules->lock);
-	printf("%lo %d is sleeping\n", \
+	printf("%lu %d is sleeping\n", \
 		atm() - philo->rules->time, philo->id);
-	pthread_mutex_unlock(philo->rules->lock);
-	usleep(philo->rules->sleep * 1000);
+	slip(philo->rules->sleep);
 }
 
 void	philo_think(t_philo *philo)
 {
-	pthread_mutex_lock(philo->rules->lock);
-	printf("%lo %d is thinking\n", \
+	printf("%lu %d is thinking\n", \
 		atm() - philo->rules->time, philo->id);
-	pthread_mutex_unlock(philo->rules->lock);
 }
 
 void	*philosopher(void *args)
@@ -73,19 +63,17 @@ void	*philosopher(void *args)
 	t_philo			*philo;
 
 	philo = args;
+	printf("%d - START\n", philo->id);
 	philo->last_meal = atm();
 	philo->meals_eaten = 0;
 	philo->ded = 0;
-	while (69)
+	while (1)
 	{
 		philo_fork(philo);
-		usleep(500);
 		philo_eat(philo);
-		usleep(500);
 		philo_sleep(philo);
-		usleep(500);
 		philo_think(philo);
-		usleep(500);
 	}
+	printf("%d - END\n", philo->id);
 	return (NULL);
 }

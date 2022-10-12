@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:46:14 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/12 16:55:42 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/12 18:00:19 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,9 @@ int	main(int argc, char **argv)
 		return (-1);
 	philo = philo_init(&rules);
 	i = -1;
-	// rules.lock = malloc(sizeof(pthread_mutex_t));
-	// pthread_mutex_init(&rules.lock, NULL);
 	while (++i < rules.number)
 	{
 		pthread_create(philo[i].thread, NULL, &philosopher, &philo[i]);
-		// usleep(1);
 	}
 	i = -1;
 	while (++i < rules.number)
