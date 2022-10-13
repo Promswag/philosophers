@@ -6,7 +6,7 @@
 #    By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/30 14:35:47 by gbaumgar          #+#    #+#              #
-#    Updated: 2022/10/12 17:47:56 by gbaumgar         ###   ########.fr        #
+#    Updated: 2022/10/13 14:16:05 by gbaumgar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,7 @@ OBJS			= ${SRC:%.c=${OUT_DIR}%.o}
 INCLUDE			= -I${INCLUDE_DIR}	
 
 CC				= gcc
-CFLAGS			= -Wall -Wextra -Werror
-# -g -fsanitize=thread
+CFLAGS			= -Wall -Wextra -Werror -g -fsanitize=thread
 RM				= rm -f
 
 all: ${NAME}

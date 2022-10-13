@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:45:33 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/12 17:52:52 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/13 13:05:38 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ struct s_rules
 	int				eat;
 	int				sleep;
 	int				full;
+	int				finish;
 };
 
 struct s_philo
@@ -38,10 +39,12 @@ struct s_philo
 	t_rules			*rules;
 	pthread_t		*thread;
 	int				id;
-	int				last_meal;
+	long unsigned	last_meal;
 	int				meals_eaten;
 	int				ded;
+	int				fork_state;
 	pthread_mutex_t	left_fork;
+	pthread_mutex_t	lock;
 	t_philo			*next_philo;
 };
 
@@ -62,6 +65,6 @@ void			ft_putstr_fd(char *s, int fd);
 
 //	misc.c
 long unsigned	atm(void);
-void			slip(long delay);
+void			ft_sleep(long delay);
 
 #endif

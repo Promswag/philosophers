@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 13:40:00 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/12 17:53:41 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/13 13:46:21 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ t_philo	*philo_init(t_rules *rules)
 	{
 		philo[i].id = i + 1;
 		philo[i].rules = rules;
+		philo[i].fork_state = 1;
+		philo[i].ded = 0;
 		pthread_mutex_init(&philo[i].left_fork, NULL);
+		pthread_mutex_init(&philo[i].lock, NULL);
 		philo[i].thread = malloc(sizeof(pthread_t *));
 	}
 	i = -1;
@@ -71,5 +74,6 @@ t_philo	*philo_init(t_rules *rules)
 		philo[i].next_philo = &philo[i + 1];
 	philo[i].next_philo = &philo[0];
 	rules->time = atm();
+	rules->finish = 0;
 	return (philo);
 }

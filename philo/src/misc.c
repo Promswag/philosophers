@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 15:22:40 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/12 18:02:16 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:06:43 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ long unsigned	atm(void)
 	return ((long unsigned)time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	slip(long delay)
+void	ft_sleep(long delay)
 {
 	long unsigned	time;
 
