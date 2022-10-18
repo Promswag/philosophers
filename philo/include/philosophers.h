@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:45:33 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/13 13:05:38 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/18 13:02:38 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,7 @@ void			ft_putstr_fd(char *s, int fd);
 //	misc.c
 long unsigned	atm(void);
 void			ft_sleep(long delay);
+int				philo_check(t_philo *philo);
+void			philo_end(t_philo *philo, t_rules rules);
 
 #endif
