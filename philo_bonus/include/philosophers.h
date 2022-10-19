@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:45:33 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/18 18:27:35 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/19 14:41:20 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 # define PHILOSOPHERS_H
 
 # include <semaphore.h>
+# include <pthread.h>
 # include <sys/time.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
+# include <signal.h>
 # include <fcntl.h> 
 # include <signal.h>
 # include <stdio.h>
@@ -35,7 +37,7 @@ struct s_rules
 	int				eat;
 	int				sleep;
 	int				full;
-	int				finish;
+	int				forks_count;
 	sem_t			*forks;
 	sem_t			*checker;
 };
@@ -44,11 +46,10 @@ struct s_philo
 {
 	t_rules			*rules;
 	pid_t			pid;
+	pthread_t		thread;
 	int				id;
 	long unsigned	last_meal;
 	int				meals_eaten;
-	int				ded;
-	t_philo			*next_philo;
 };
 
 //	args.c
