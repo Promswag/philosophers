@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 13:12:04 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/19 14:41:21 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/19 15:29:38 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ void	philosopher(t_philo *philo)
 {
 	philo->last_meal = atm();
 	philo->meals_eaten = 0;
+	pthread_create(&philo->thread, NULL, philo_death, philo);
+	pthread_detach(philo->thread);
 	while (1)
 	{
 		if (philo_fork(philo) || philo_fork(philo) || philo_eat(philo) || \

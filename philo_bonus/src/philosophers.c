@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:46:14 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/19 14:13:23 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/19 15:36:59 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,6 @@ int	main(int argc, char **argv)
 			philosopher(&philo[i]);
 			return (0);
 		}
-	}
-	if (rules.number == 1)
-	{
-		ft_sleep(rules.die + 2);
-		sem_post(rules.forks);
 	}
 	philo_end(philo, rules);
 	return (0);

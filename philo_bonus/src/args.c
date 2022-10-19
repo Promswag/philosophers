@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 13:40:00 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/19 14:42:39 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/19 15:23:52 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,11 @@ t_philo	*philo_init(t_rules *rules)
 	{
 		philo[i].id = i + 1;
 		philo[i].rules = rules;
-		// philo[i].ded = 0;
-		// if (i < rules->number - 1)
-		// 	philo[i].next_philo = &philo[i + 1];
-		// else
-		// 	philo[i].next_philo = &philo[0];
 	}
 	rules->forks = sem_open("/forks", O_CREAT | O_EXCL, \
 		S_IRUSR | S_IWUSR, rules->number);
 	rules->checker = sem_open("/checker", O_CREAT | O_EXCL, \
 		S_IRUSR | S_IWUSR, 1);
 	rules->time = atm();
-	// rules->finish = 0;
 	return (philo);
 }

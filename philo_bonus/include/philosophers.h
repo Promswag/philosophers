@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:45:33 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/19 14:41:20 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/19 15:28:40 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ struct s_rules
 	int				eat;
 	int				sleep;
 	int				full;
-	int				forks_count;
 	sem_t			*forks;
 	sem_t			*checker;
 };
@@ -58,6 +57,10 @@ int				args_handler(int argc, char **argv, t_rules *rules);
 t_philo			*philo_init(t_rules *rules);
 
 //	thread.c
+int				philo_fork(t_philo *philo);
+int				philo_eat(t_philo *philo);
+int				philo_sleep(t_philo *philo);
+int				philo_think(t_philo *philo);
 void			philosopher(t_philo *philo);
 
 //	utils.c
@@ -72,5 +75,6 @@ long unsigned	atm(void);
 void			ft_sleep(long delay);
 int				philo_check(t_philo *philo);
 void			philo_end(t_philo *philo, t_rules rules);
+void			*philo_death(void *arg);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 15:22:40 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/19 14:07:11 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/19 15:42:16 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ void	philo_end(t_philo *philo, t_rules rules)
 	err = 1;
 	while (err > 0)
 	{
-		// kill(philo[0].pid, SIGKILL);
 		err = waitpid(-1, &stat_loc, 0);
-		// printf("%d\n", stat_loc);
 		if (stat_loc == 65280 || stat_loc == 9)
 			break ;
 	}
@@ -78,10 +76,20 @@ void	philo_end(t_philo *philo, t_rules rules)
 		free(philo);
 }
 
-// void	*philo_dead(void *arg)
-// {
-// 	t_philo	*philo;
+void	*philo_death(void *arg)
+{
+	t_philo	*philo;
 
-// 	philo = arg;
-// 	return (NULL);
-// }
+	philo = arg;
+	while (1)
+	{
+		if (atm() >= philo->last_meal + philo->rules->die)
+		{
+			sem_wait(philo->rules->checker);
+			printf("%6lu %d has died\n", \
+				atm() - philo->rules->time, philo->id);
+			exit(-1);
+		}
+	}
+	return (NULL);
+}
