@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 15:22:40 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/18 13:02:26 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/20 11:24:10 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,15 @@ int	philo_check(t_philo *philo)
 void	philo_end(t_philo *philo, t_rules rules)
 {
 	while (rules.number--)
+	{
 		if (philo + rules.number)
+		{
 			free(philo[rules.number].thread);
+			pthread_mutex_destroy(&philo[rules.number].left_fork);
+			pthread_mutex_destroy(&philo[rules.number].lock);
+		}
+	}
+	pthread_mutex_destroy(&rules.lock);
 	if (philo)
 		free(philo);
 }
