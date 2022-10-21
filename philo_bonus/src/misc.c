@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 15:22:40 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/19 15:42:16 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/21 18:45:01 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,30 +25,19 @@ void	ft_sleep(long delay)
 	long unsigned	time;
 
 	time = atm();
-	usleep(delay * 950);
+	usleep(delay * 900);
 	while (1)
 	{
 		if (atm() >= time + delay)
 			break ;
-		usleep(5);
+		usleep(100);
 	}
 }
 
 int	philo_check(t_philo *philo)
 {
-	sem_wait(philo->rules->checker);
-	if (atm() >= philo->last_meal + philo->rules->die)
-	{
-		printf("%6lu %d has died\n", \
-			atm() - philo->rules->time, philo->id);
-		exit(-1);
-	}
-	if (philo->meals_eaten == philo->rules->full && philo->rules->full != 0)
-	{
-		sem_post(philo->rules->checker);
+	if (philo->meals_eaten == philo->rules->full)
 		return (1);
-	}
-	sem_post(philo->rules->checker);
 	return (0);
 }
 
@@ -68,9 +57,9 @@ void	philo_end(t_philo *philo, t_rules rules)
 	}
 	while (++i < rules.number)
 		kill(philo[i].pid, SIGKILL);
-	sem_close(philo[0].rules->forks);
+	sem_close(philo->rules->forks);
 	sem_unlink("/forks");
-	sem_close(philo[0].rules->checker);
+	sem_close(philo->rules->checker);
 	sem_unlink("/checker");
 	if (philo)
 		free(philo);
@@ -83,13 +72,20 @@ void	*philo_death(void *arg)
 	philo = arg;
 	while (1)
 	{
+		sem_wait(philo->rules->checker);
+		if (philo->meals_eaten == philo->rules->full)
+		{
+			sem_post(philo->rules->checker);
+			break ;
+		}
 		if (atm() >= philo->last_meal + philo->rules->die)
 		{
-			sem_wait(philo->rules->checker);
 			printf("%6lu %d has died\n", \
 				atm() - philo->rules->time, philo->id);
 			exit(-1);
 		}
+		sem_post(philo->rules->checker);
+		usleep(100);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:45:33 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/19 15:28:40 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/21 18:43:33 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ struct s_philo
 	t_rules			*rules;
 	pid_t			pid;
 	pthread_t		thread;
+	sem_t			*sem;
 	int				id;
 	long unsigned	last_meal;
 	int				meals_eaten;

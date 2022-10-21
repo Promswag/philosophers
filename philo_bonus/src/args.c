@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 13:40:00 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/19 15:23:52 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/21 18:27:44 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	args_loader(char **argv, t_rules *rules)
 	if (argv[5])
 		rules->full = ft_atoi(argv[5]);
 	else
-		rules->full = 0;
+		rules->full = -1;
 	if (!rules->number || !rules->die || \
 		!rules->eat || !rules->sleep)
 		return (-1);
@@ -42,11 +42,16 @@ int	args_handler(int argc, char **argv, t_rules *rules)
 			ft_putstr_fd("Args must be numbers\n", 2);
 			return (-2);
 		}
+		if (ft_atoi(argv[argc]) < 0)
+		{
+			ft_putstr_fd("Positive numbers only\n", 2);
+			return (-3);
+		}
 	}
 	if (args_loader(argv, rules))
 	{
 		ft_putstr_fd("Mandatory args cannot be 0\n", 2);
-		return (-3);
+		return (-4);
 	}
 	return (0);
 }
