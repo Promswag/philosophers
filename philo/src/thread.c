@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 13:12:04 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/18 13:02:43 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/21 17:27:06 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ int	philo_fork(t_philo *philo, int *status, pthread_mutex_t *fork)
 {
 	if (philo->meals_eaten == 0 && philo->id % 2 == 0)
 		ft_sleep(1);
+	if (philo->id % 2 && philo->next_philo->id == 1)
+		ft_sleep(1);
 	if (philo->meals_eaten != 0 && atm() - philo->last_meal > (unsigned long) \
 		philo->rules->die - philo->rules->eat - philo->rules->sleep - 1)
-		usleep(69);
+		usleep(100);
 	while (!philo_check(philo))
 	{
 		pthread_mutex_lock(fork);
@@ -68,7 +70,10 @@ int	philo_sleep(t_philo *philo)
 		printf("%6lu %d is sleeping\n", \
 			atm() - philo->rules->time, philo->id);
 	pthread_mutex_unlock(&philo->rules->lock);
-	ft_sleep(philo->rules->sleep);
+	if (philo->rules->sleep + philo->rules->eat > philo->rules->die)
+		ft_sleep(philo->rules->die - philo->rules->sleep);
+	else
+		ft_sleep(philo->rules->sleep);
 	return (0);
 }
 

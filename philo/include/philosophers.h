@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:45:33 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/18 13:02:38 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/21 17:18:42 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ struct s_philo
 	int				id;
 	long unsigned	last_meal;
 	int				meals_eaten;
-	int				ded;
 	int				fork_state;
 	pthread_mutex_t	left_fork;
 	pthread_mutex_t	lock;

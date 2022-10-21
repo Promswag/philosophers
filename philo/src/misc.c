@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 15:22:40 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/20 11:24:10 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/21 17:15:48 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,30 +25,27 @@ void	ft_sleep(long delay)
 	long unsigned	time;
 
 	time = atm();
-	usleep(delay * 950);
+	usleep(delay * 900);
 	while (1)
 	{
 		if (atm() >= time + delay)
 			break ;
-		usleep(5);
+		usleep(100);
 	}
 }
 
 int	philo_check(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->rules->lock);
-	if (!philo->rules->finish && !philo->ded && \
-		atm() >= philo->last_meal + philo->rules->die)
+	if (!philo->rules->finish && atm() >= philo->last_meal + philo->rules->die)
 	{
 		printf("%6lu %d has died\n", \
 			atm() - philo->rules->time, philo->id);
-		philo->ded = 1;
 		philo->rules->finish = 1;
 		pthread_mutex_unlock(&philo->rules->lock);
 		return (1);
 	}
-	if (philo->rules->finish || philo->ded || \
-		(philo->meals_eaten == philo->rules->full && philo->rules->full != 0))
+	if (philo->rules->finish || philo->meals_eaten == philo->rules->full)
 	{
 		pthread_mutex_unlock(&philo->rules->lock);
 		return (1);

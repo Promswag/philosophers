@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 13:40:00 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/13 13:46:21 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/21 17:20:59 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	args_loader(char **argv, t_rules *rules)
 	if (argv[5])
 		rules->full = ft_atoi(argv[5]);
 	else
-		rules->full = 0;
+		rules->full = -1;
 	pthread_mutex_init(&rules->lock, NULL);
 	if (!rules->number || !rules->die || \
 		!rules->eat || !rules->sleep)
@@ -43,11 +43,16 @@ int	args_handler(int argc, char **argv, t_rules *rules)
 			ft_putstr_fd("Args must be numbers\n", 2);
 			return (-2);
 		}
+		if (ft_atoi(argv[argc]) < 0)
+		{
+			ft_putstr_fd("Positive numbers only\n", 2);
+			return (-3);
+		}
 	}
 	if (args_loader(argv, rules))
 	{
 		ft_putstr_fd("Mandatory args cannot be 0\n", 2);
-		return (-3);
+		return (-4);
 	}
 	return (0);
 }
@@ -64,7 +69,6 @@ t_philo	*philo_init(t_rules *rules)
 		philo[i].id = i + 1;
 		philo[i].rules = rules;
 		philo[i].fork_state = 1;
-		philo[i].ded = 0;
 		pthread_mutex_init(&philo[i].left_fork, NULL);
 		pthread_mutex_init(&philo[i].lock, NULL);
 		philo[i].thread = malloc(sizeof(pthread_t *));
