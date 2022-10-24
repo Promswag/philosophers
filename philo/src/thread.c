@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 13:12:04 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/21 17:27:06 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/24 12:17:26 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int	philo_eat(t_philo *philo)
 
 int	philo_sleep(t_philo *philo)
 {
+	int	diff;
+
 	if (philo_check(philo))
 		return (-1);
 	pthread_mutex_lock(&philo->rules->lock);
@@ -70,8 +72,9 @@ int	philo_sleep(t_philo *philo)
 		printf("%6lu %d is sleeping\n", \
 			atm() - philo->rules->time, philo->id);
 	pthread_mutex_unlock(&philo->rules->lock);
-	if (philo->rules->sleep + philo->rules->eat > philo->rules->die)
-		ft_sleep(philo->rules->die - philo->rules->sleep);
+	diff = atm() + philo->rules->sleep - philo->last_meal - philo->rules->die;
+	if (atm() + philo->rules->sleep > philo->last_meal + philo->rules->die)
+		ft_sleep(philo->rules->sleep - diff);
 	else
 		ft_sleep(philo->rules->sleep);
 	return (0);

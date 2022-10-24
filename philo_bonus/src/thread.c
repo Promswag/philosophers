@@ -6,7 +6,7 @@
 /*   By: gbaumgar <gbaumgar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 13:12:04 by gbaumgar          #+#    #+#             */
-/*   Updated: 2022/10/21 18:40:30 by gbaumgar         ###   ########.fr       */
+/*   Updated: 2022/10/24 13:57:44 by gbaumgar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 int	philo_fork(t_philo *philo)
 {
-	// if (philo->meals_eaten == 0 && philo->id % 2 == 0)
-	// 	usleep(1000);
-	// if (philo->meals_eaten != 0 && atm() - philo->last_meal > (unsigned long) \
-	// 	philo->rules->die - philo->rules->eat - philo->rules->sleep - 1)
-	// 	usleep(100);
 	if (philo_check(philo))
 		return (-1);
 	sem_wait(philo->rules->forks);
